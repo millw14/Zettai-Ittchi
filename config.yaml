@@ -1,0 +1,58 @@
+server:
+  host: 127.0.0.1
+  port: 8000
+  log_level: info
+
+output:
+  default_mode: ghost  # ghost | clean | debug | audit
+
+debate:
+  enabled: true
+  max_rounds: 2
+  strict_unanimity: true
+  stream_internal: false
+  max_total_seconds: 25
+  fallback_on_deadlock: true
+  malformed_vote_is_block: true
+
+fallback:
+  allow_single_model_pass_through: false
+  return_objections_on_deadlock: true
+
+agents:
+  - name: analyst
+    model: openai/gpt-4o
+    role: Critical Analyst
+  - name: skeptic
+    model: anthropic/claude-sonnet-4-5
+    role: Skeptical Reviewer
+  - name: optimizer
+    model: xai/grok-4
+    role: Creative Optimizer
+
+virtual_models:
+  default: zettai-ittchi
+  presets:
+    zettai-fast: fast
+    zettai-balanced: balanced
+    zettai-paranoid: paranoid
+    zettai-debug: debug
+
+presets:
+  fast:
+    debate:
+      max_rounds: 1
+      strict_unanimity: false
+  balanced:
+    debate:
+      max_rounds: 2
+      strict_unanimity: true
+  paranoid:
+    debate:
+      max_rounds: 4
+      strict_unanimity: true
+  debug:
+    output:
+      default_mode: debug
+    debate:
+      stream_internal: true
